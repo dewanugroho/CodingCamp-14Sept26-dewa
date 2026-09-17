@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense &amp; Budget Visualizer</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Chart.js via CDN (TC-1: no frameworks, chart library only) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+      defer
+    ></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+
+    <!-- ── HEADER ── -->
+    <header class="app-header">
+      <h1>💸 Expense &amp; Budget Visualizer</h1>
+      <button
+        id="theme-toggle"
+        class="theme-btn"
+        aria-label="Toggle dark/light mode"
+        title="Toggle dark/light mode"
+      >🌙 Dark Mode</button>
+    </header>
+
+    <main class="app-main">
+
+      <!-- ── BALANCE CARD ── -->
+      <section class="card balance-card" aria-label="Total balance">
+        <p class="balance-label">Total Spent</p>
+        <p class="balance-amount" id="total-balance">$0.00</p>
+      </section>
+
+      <!-- ── ADD TRANSACTION FORM ── -->
+      <section class="card form-card" aria-label="Add transaction">
+        <h2 class="card-title">Add Transaction</h2>
+        <form id="transaction-form" novalidate>
+
+          <div class="form-group">
+            <label for="item-name">Item Name</label>
+            <input
+              type="text"
+              id="item-name"
+              name="item-name"
+              placeholder="e.g. Coffee"
+              autocomplete="off"
+            />
+            <span class="field-error" id="name-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Amount ($)</label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              placeholder="e.g. 4.50"
+              min="0.01"
+              step="0.01"
+            />
+            <span class="field-error" id="amount-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+              <option value="">-- Select category --</option>
+              <option value="Food">🍔 Food</option>
+              <option value="Transport">🚌 Transport</option>
+              <option value="Fun">🎮 Fun</option>
+            </select>
+            <span class="field-error" id="category-error" role="alert"></span>
+          </div>
+
+          <button type="submit" class="btn-primary">Add Transaction</button>
+        </form>
+
+        <!-- ── CUSTOM CATEGORY ── -->
+        <div class="custom-category-section">
+          <h3 class="section-subtitle">Add Custom Category</h3>
+          <div class="custom-category-row">
+            <input
+              type="text"
+              id="custom-category-input"
+              placeholder="e.g. Healthcare"
+              autocomplete="off"
+              aria-label="New category name"
+            />
+            <button id="add-category-btn" class="btn-secondary">+ Add Category</button>
+          </div>
+          <span class="field-error" id="custom-category-error" role="alert"></span>
+        </div>
+      </section>
+
+      <!-- ── MONTHLY SUMMARY ── -->
+      <section class="card summary-card" aria-label="Monthly summary">
+        <div class="summary-header">
+          <h2 class="card-title">Monthly Summary</h2>
+          <select id="month-selector" aria-label="Select month to view">
+            <!-- Populated by JS -->
+          </select>
+        </div>
+        <p class="empty-state" id="summary-empty">No data for this month yet.</p>
+        <div id="summary-content" hidden>
+          <p class="summary-total">
+            Total: <strong id="summary-total-amount">$0.00</strong>
+          </p>
+          <ul class="summary-breakdown" id="summary-breakdown" aria-label="Spending breakdown by category"></ul>
+        </div>
+      </section>
+
+      <!-- ── CONTENT GRID: transaction list + chart ── -->
+      <div class="content-grid">
+
+        <!-- Transaction List -->
+        <section class="card list-card" aria-label="Transaction history">
+          <h2 class="card-title">Transactions</h2>
+          <p class="empty-state" id="empty-state">No transactions yet. Add one above!</p>
+          <ul class="transaction-list" id="transaction-list" aria-live="polite"></ul>
+        </section>
+
+        <!-- Pie Chart -->
+        <section class="card chart-card" aria-label="Spending by category">
+          <h2 class="card-title">Spending by Category</h2>
+          <div class="chart-wrapper">
+            <canvas
+              id="spending-chart"
+              aria-label="Pie chart of spending by category"
+              role="img"
+            ></canvas>
+          </div>
+          <p class="empty-state" id="chart-empty">Chart will appear once you add transactions.</p>
+        </section>
+
+      </div><!-- /.content-grid -->
+
+    </main>
+
+    <footer class="app-footer">
+      <p>Data stored locally in your browser &middot; CodingCamp 2026</p>
+    </footer>
+
+  </body>
+</html>
